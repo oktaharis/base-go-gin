@@ -14,7 +14,8 @@ var (
 func SetupRestHandlers(app *gin.Engine) {
 	handler := server.GetHandler()
 
-	accountHandler = NewAccountHandler(handler, service.GetAccountService())
+	accountHandler = NewAccountHandler(
+		handler, service.GetAccountService(), service.GetPersonService())
 
 	setupRoutes(app)
 }

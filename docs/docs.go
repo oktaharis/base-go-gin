@@ -11,18 +11,62 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "Mark Muhammad",
-            "url": "https://github.com/mark-muhammad",
             "email": "mark.p.e.muhammad@gmail.com"
         },
         "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/license/MIT"
+            "name": "MIT"
         },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/account": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get profile of logged-in account.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get account's profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.SuccessResponse-dto_AccountProfileResp"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/account/login": {
             "post": {
                 "description": "Account login using username \u0026 password combination.",
@@ -103,6 +147,20 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.AccountProfileResp": {
+            "type": "object",
+            "properties": {
+                "age": {
+                    "type": "integer"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -121,6 +179,21 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/dto.AccountLoginResp"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "dto.SuccessResponse-dto_AccountProfileResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/dto.AccountProfileResp"
                 },
                 "message": {
                     "type": "string"

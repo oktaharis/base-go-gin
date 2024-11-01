@@ -17,3 +17,13 @@ func TestAccount_Login_Success(t *testing.T) {
 	w := doTest("POST", server.RootAccount+server.PathLogin, req, "")
 	assert.Equal(t, 200, w.Code)
 }
+
+func TestAccount_GetProfile_Success(t *testing.T) {
+	accessToken := createAuthAccessToken(dummyProfile.Account.Username)
+
+	w := doTest("GET", server.RootAccount, nil, accessToken)
+	assert.Equal(t, 200, w.Code)
+
+	resp := w.Body.String()
+	assert.Contains(t, resp, dummyProfile.Fullname)
+}

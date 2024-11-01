@@ -2,12 +2,14 @@ package integration_test
 
 import (
 	"base-gin/config"
+	"base-gin/domain"
 	"base-gin/domain/dao"
 	"base-gin/repository"
 	"base-gin/rest"
 	"base-gin/server"
 	"base-gin/service"
 	"base-gin/storage"
+	"base-gin/util"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -16,6 +18,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -31,7 +34,10 @@ var (
 	db  *gorm.DB
 	app *gin.Engine
 
+	dummyProfile *dao.Person
+
 	accountRepo *repository.AccountRepository
+	personRepo  *repository.PersonRepository
 )
 
 func TestMain(m *testing.M) {
@@ -56,8 +62,10 @@ func setup() {
 
 	repository.SetupRepositories()
 	accountRepo = repository.GetAccountRepo()
+	personRepo = repository.GetPersonRepo()
 
-	createDummyAccount()
+	a := createDummyAccount()
+	dummyProfile = createDummyProfile(*a)
 
 	service.SetupServices(&cfg)
 
@@ -68,12 +76,14 @@ func setup() {
 func teardownDB() {
 	_ = db.Migrator().DropTable(
 		&dao.Account{},
+		&dao.Person{},
 	)
 }
 
 func setupDB() {
 	_ = db.AutoMigrate(
 		&dao.Account{},
+		&dao.Person{},
 	)
 }
 
@@ -81,6 +91,27 @@ func createDummyAccount() *dao.Account {
 	account, _ := dao.NewUser("admin", password, cfg.AuthN.PasswordEncryptionSecret)
 	accountRepo.Create(&account)
 	return &account
+}
+
+func createDummyProfile(account dao.Account) *dao.Person {
+	birthDate, _ := time.Parse("2006-01-02", "1995-04-05")
+	person := dao.Person{
+		AccountID: &account.ID,
+		Account:   &account,
+		Fullname:  util.RandomString(5) + " " + util.RandomString(6),
+		Gender:    domain.GenderMale,
+		BirthDate: birthDate,
+	}
+	personRepo.Create(&person)
+	return &person
+}
+
+func createAuthAccessToken(username string) string {
+	token, err := util.CreateAuthAccessToken(cfg, username)
+	if err != nil {
+		log.Fatal(fmt.Errorf("main_test.createAuthAccessToken %w", err))
+	}
+	return token
 }
 
 func doTest(
