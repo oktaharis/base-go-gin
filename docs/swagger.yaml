@@ -38,6 +38,56 @@ definitions:
         example: false
         type: boolean
     type: object
+  dto.PersonDetailResp:
+    properties:
+      age:
+        type: integer
+      fullname:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+    type: object
+  dto.PersonUpdateReq:
+    properties:
+      birth_date:
+        type: string
+      fullname:
+        maxLength: 56
+        minLength: 4
+        type: string
+      gender:
+        enum:
+        - m
+        - f
+        type: string
+    required:
+    - birth_date
+    - fullname
+    - gender
+    type: object
+  dto.SuccessResponse-any:
+    properties:
+      data: {}
+      message:
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
+  dto.SuccessResponse-array_dto_PersonDetailResp:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/dto.PersonDetailResp'
+        type: array
+      message:
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   dto.SuccessResponse-dto_AccountLoginResp:
     properties:
       data:
@@ -58,6 +108,16 @@ definitions:
         example: true
         type: boolean
     type: object
+  dto.SuccessResponse-dto_PersonDetailResp:
+    properties:
+      data:
+        $ref: '#/definitions/dto.PersonDetailResp'
+      message:
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
 externalDocs:
   description: OpenAPI
   url: https://swagger.io/resources/open-api/
@@ -72,7 +132,7 @@ info:
   title: Base API Service
   version: "1.0"
 paths:
-  /account:
+  /accounts:
     get:
       description: Get profile of logged-in account.
       produces:
@@ -101,7 +161,7 @@ paths:
       security:
       - BearerAuth: []
       summary: Get account's profile
-  /account/login:
+  /accounts/login:
     post:
       consumes:
       - application/json
@@ -133,6 +193,121 @@ paths:
           schema:
             $ref: '#/definitions/dto.ErrorResponse'
       summary: Account login
+  /persons:
+    get:
+      description: Get a list of person.
+      parameters:
+      - description: Person's name
+        in: query
+        name: q
+        type: string
+      - description: Data offset
+        in: query
+        name: s
+        type: integer
+      - description: Data limit
+        in: query
+        name: l
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SuccessResponse-array_dto_PersonDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get a list of person
+  /persons/{id}:
+    get:
+      description: Get a person's detail.
+      parameters:
+      - description: Person's ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SuccessResponse-dto_PersonDetailResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      summary: Get a person's detail
+    put:
+      consumes:
+      - application/json
+      description: Update a person's detail.
+      parameters:
+      - description: Person's ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Person's detail
+        in: body
+        name: detail
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PersonUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.SuccessResponse-any'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a person's detail
 securityDefinitions:
   BearerAuth:
     description: Bearer auth containing JWT

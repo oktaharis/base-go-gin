@@ -24,13 +24,18 @@ type AccountProfileResp struct {
 
 func (o *AccountProfileResp) FromPerson(person *dao.Person) {
 	var gender string
-	if person.Gender == domain.GenderFemale {
+	if person.Gender == nil {
+		gender = "-"
+	} else if *person.Gender == domain.GenderFemale {
 		gender = "wanita"
 	} else {
 		gender = "pria"
 	}
 
-	age := time.Since(person.BirthDate).Hours() / (24 * 365)
+	var age float64
+	if person.BirthDate != nil {
+		age = time.Since(*person.BirthDate).Hours() / (24 * 365)
+	}
 
 	o.Fullname = person.Fullname
 	o.Gender = gender

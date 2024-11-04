@@ -19,11 +19,11 @@ func TestAccount_Login_Success(t *testing.T) {
 }
 
 func TestAccount_GetProfile_Success(t *testing.T) {
-	accessToken := createAuthAccessToken(dummyProfile.Account.Username)
+	accessToken := createAuthAccessToken(dummyAdmin.Account.Username)
 
 	w := doTest("GET", server.RootAccount, nil, accessToken)
 	assert.Equal(t, 200, w.Code)
 
 	resp := w.Body.String()
-	assert.Contains(t, resp, dummyProfile.Fullname)
+	assert.Contains(t, resp, dummyAdmin.Fullname)
 }

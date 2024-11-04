@@ -9,9 +9,13 @@ import (
 
 type Person struct {
 	gorm.Model
-	AccountID *uint
-	Account   *Account          `gorm:"foreignKey:AccountID;"`
-	Fullname  string            `gorm:"not null;"`
-	Gender    domain.TypeGender `gorm:"type:enum('f','m');not null;"`
-	BirthDate time.Time         `gorm:"not null;"`
+	AccountID *uint              `gorm:"uniqueIndex;"`
+	Account   *Account           `gorm:"foreignKey:AccountID;"`
+	Fullname  string             `gorm:"size:56;not null;"`
+	Gender    *domain.TypeGender `gorm:"type:enum('f','m');"`
+	BirthDate *time.Time
+}
+
+func (Person) TableName() string {
+	return "persons"
 }

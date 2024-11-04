@@ -43,7 +43,7 @@ func (h *AccountHandler) Route(app *gin.Engine) {
 //	@Failure 400 {object} dto.ErrorResponse
 //	@Failure 422 {object} dto.ErrorResponse
 //	@Failure 500 {object} dto.ErrorResponse
-//	@Router /account/login [post]
+//	@Router /accounts/login [post]
 func (h *AccountHandler) login(c *gin.Context) {
 	var req dto.AccountLoginReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -81,7 +81,7 @@ func (h *AccountHandler) login(c *gin.Context) {
 //	@Failure 403 {object} dto.ErrorResponse
 //	@Failure 404 {object} dto.ErrorResponse
 //	@Failure 500 {object} dto.ErrorResponse
-//	@Router /account [get]
+//	@Router /accounts [get]
 func (h *AccountHandler) getProfile(c *gin.Context) {
 	accountID, _ := c.Get(server.ParamTokenUserID)
 

@@ -39,6 +39,16 @@ func RandomString(length int) string {
 	return string(bytes)
 }
 
+func RandomStringAlpha(length int) string {
+	chars := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	bytes := make([]byte, length)
+	_, _ = rand.Read(bytes)
+	for i, b := range bytes {
+		bytes[i] = chars[b%byte(len(chars))]
+	}
+	return string(bytes)
+}
+
 func ValidatePhoneNumber(text string) bool {
 	re := regexp.MustCompile(`^[1-9][0-9]*$`)
 	return re.MatchString(text)
