@@ -2,14 +2,15 @@ package dao
 
 import (
 	"base-gin/util"
-
-	"gorm.io/gorm"
+	"time"
 )
 
 type Account struct {
-	gorm.Model
-	Username string `gorm:"size:16;not null;uniqueIndex:user_pass;"`
-	Password string `gorm:"size:255;not null;uniqueIndex:user_pass;"`
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Username  string `gorm:"size:16;not null;uniqueIndex:user_pass;"`
+	Password  string `gorm:"size:255;not null;uniqueIndex:user_pass;"`
 }
 
 func NewUser(uname, paswd, secret string) (Account, error) {
