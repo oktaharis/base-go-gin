@@ -27,3 +27,11 @@ func TestAccount_GetProfile_Success(t *testing.T) {
 	resp := w.Body.String()
 	assert.Contains(t, resp, dummyAdmin.Fullname)
 }
+
+func TestAccount_GetProfile_ErrorAccessToken(t *testing.T) {
+	w := doTest("GET", server.RootAccount, nil, "")
+	assert.Equal(t, 401, w.Code)
+
+	w = doTest("GET", server.RootAccount, nil, "accessToken")
+	assert.Equal(t, 401, w.Code)
+}

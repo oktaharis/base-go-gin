@@ -6,13 +6,15 @@ import (
 )
 
 var (
-	accountService *AccountService
-	personService  *PersonService
+	accountService   *AccountService
+	personService    *PersonService
+	publisherService *PublisherService
 )
 
 func SetupServices(cfg *config.Config) {
 	accountService = NewAccountService(cfg, repository.GetAccountRepo())
 	personService = NewPersonService(repository.GetPersonRepo())
+	publisherService = NewPublisherService(repository.GetPublisherRepo())
 }
 
 func GetAccountService() *AccountService {
@@ -25,4 +27,8 @@ func GetAccountService() *AccountService {
 
 func GetPersonService() *PersonService {
 	return personService
+}
+
+func GetPublisherService() *PublisherService {
+	return publisherService
 }
