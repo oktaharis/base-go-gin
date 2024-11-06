@@ -6,12 +6,6 @@ import (
 	"time"
 )
 
-type PersonFilter struct {
-	Keyword string `form:"q" binding:"omitempty"`
-	Start   int    `form:"s" binding:"omitempty,min=0"`
-	Limit   int    `form:"l" binding:"omitempty,min=1"`
-}
-
 type PersonDetailResp struct {
 	ID       int    `json:"id"`
 	Fullname string `json:"fullname"`

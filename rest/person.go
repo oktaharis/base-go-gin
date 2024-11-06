@@ -40,13 +40,13 @@ func (h *PersonHandler) Route(app *gin.Engine) {
 //	@Param s query int false "Data offset"
 //	@Param l query int false "Data limit"
 //	@Success 200 {object} dto.SuccessResponse[[]dto.PersonDetailResp]
-//	@Failure 400 {object} dto.ErrorResponse
+//	@Failure 422 {object} dto.ErrorResponse
 //	@Failure 404 {object} dto.ErrorResponse
 //	@Failure 422 {object} dto.ErrorResponse
 //	@Failure 500 {object} dto.ErrorResponse
 //	@Router /persons [get]
 func (h *PersonHandler) getList(c *gin.Context) {
-	var req dto.PersonFilter
+	var req dto.Filter
 	if err := c.ShouldBindQuery(&req); err != nil {
 		c.JSON(h.hr.BindingError(err))
 		return

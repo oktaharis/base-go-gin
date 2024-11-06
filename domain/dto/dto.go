@@ -23,3 +23,9 @@ type ClientInfo struct {
 	UserOS    string
 	UserGeo   string
 }
+
+type Filter struct {
+	Keyword string `form:"q" binding:"omitempty"`
+	Start   int    `form:"s" binding:"omitempty,min=0"`
+	Limit   int    `form:"l" binding:"omitempty,min=1"`
+}

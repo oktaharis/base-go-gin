@@ -43,7 +43,7 @@ func (s *PersonService) GetByID(id uint) (dto.PersonDetailResp, error) {
 	return resp, nil
 }
 
-func (s *PersonService) GetList(params *dto.PersonFilter) ([]dto.PersonDetailResp, error) {
+func (s *PersonService) GetList(params *dto.Filter) ([]dto.PersonDetailResp, error) {
 	var resp []dto.PersonDetailResp
 
 	items, err := s.repo.GetList(params)

@@ -66,7 +66,7 @@ func (r *PersonRepository) GetByID(id uint) (*dao.Person, error) {
 	return &item, nil
 }
 
-func (r *PersonRepository) GetList(params *dto.PersonFilter) ([]dao.Person, error) {
+func (r *PersonRepository) GetList(params *dto.Filter) ([]dao.Person, error) {
 	ctx, cancelFunc := storage.NewDBContext()
 	defer cancelFunc()
 
