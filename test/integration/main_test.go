@@ -40,6 +40,8 @@ var (
 	accountRepo   *repository.AccountRepository
 	personRepo    *repository.PersonRepository
 	publisherRepo *repository.PublisherRepository
+	authorRepo    *repository.AuthorRepository
+	bookRepo    *repository.BookRepository
 )
 
 func TestMain(m *testing.M) {
@@ -66,6 +68,8 @@ func setup() {
 	accountRepo = repository.GetAccountRepo()
 	personRepo = repository.GetPersonRepo()
 	publisherRepo = repository.GetPublisherRepo()
+	authorRepo = repository.GetAuthorRepo()
+	bookRepo = repository.GetBookRepo()
 
 	a := createDummyAccount()
 	dummyAdmin = createDummyProfile(a)
@@ -83,6 +87,8 @@ func teardownDB() {
 		&dao.Account{},
 		&dao.Person{},
 		&dao.Publisher{},
+		&dao.Author{},
+		&dao.Book{},
 	)
 }
 
@@ -91,6 +97,8 @@ func setupDB() {
 		&dao.Account{},
 		&dao.Person{},
 		&dao.Publisher{},
+		&dao.Author{},
+		&dao.Book{},
 	)
 }
 
