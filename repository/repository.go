@@ -8,6 +8,7 @@ var (
 	publisherRepo *PublisherRepository
 	authorRepo    *AuthorRepository
 	bookRepo      *BookRepository
+	formDataRepo  *FormDataRepository
 )
 
 func SetupRepositories() {
@@ -17,6 +18,7 @@ func SetupRepositories() {
 	publisherRepo = NewPublisherRepository(db)
 	authorRepo = NewAuthorRepository(db)
 	bookRepo = NewBookRepository(db)
+	formDataRepo = NewFormDataRepository(db)
 }
 
 func GetAccountRepo() *AccountRepository {
@@ -36,4 +38,7 @@ func GetAuthorRepo() *AuthorRepository {
 }
 func GetBookRepo() *BookRepository {
 	return bookRepo
+}
+func GetFormDataRepo() *FormDataRepository {
+	return formDataRepo
 }

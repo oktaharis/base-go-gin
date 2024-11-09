@@ -13,6 +13,7 @@ var (
 	publisherHandler *PublisherHandler
 	authorHandler    *AuthorHandler
 	bookHandler      *BookHandler
+	formDataHandler  *FormDataHandler
 )
 
 func SetupRestHandlers(app *gin.Engine) {
@@ -24,6 +25,7 @@ func SetupRestHandlers(app *gin.Engine) {
 	publisherHandler = NewPublisherHandler(handler, service.GetPublisherService())
 	authorHandler = NewAuthorHandler(handler, service.GetAuthorService())
 	bookHandler = NewBookHandler(handler, service.GetBookService())
+	formDataHandler = NewFormDataHandler(handler, service.GetFormDataService())
 
 	setupRoutes(app)
 }
@@ -34,4 +36,5 @@ func setupRoutes(app *gin.Engine) {
 	publisherHandler.Route(app)
 	authorHandler.Route(app)
 	bookHandler.Route(app)
+	formDataHandler.Route(app)
 }

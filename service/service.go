@@ -11,6 +11,7 @@ var (
 	publisherService *PublisherService
 	authorService    *AuthorService
 	bookService      *BookService
+	formDataService  *FormDataService
 )
 
 func SetupServices(cfg *config.Config) {
@@ -19,6 +20,7 @@ func SetupServices(cfg *config.Config) {
 	publisherService = NewPublisherService(repository.GetPublisherRepo())
 	authorService = NewAuthorService(repository.GetAuthorRepo())
 	bookService = NewBookService(repository.GetBookRepo())
+	formDataService = NewFormDataService(repository.GetFormDataRepo())
 }
 
 func GetAccountService() *AccountService {
@@ -42,4 +44,7 @@ func GetAuthorService() *AuthorService {
 }
 func GetBookService() *BookService {
 	return bookService
+}
+func GetFormDataService() *FormDataService {
+	return formDataService
 }
